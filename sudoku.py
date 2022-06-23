@@ -1,2 +1,4 @@
 # Test
-print('Hello Sudoko!')
+print('Hello Sudoku!')
+print('Goodbye Sudoku')
+print('Please work...')
