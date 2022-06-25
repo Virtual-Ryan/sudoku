@@ -45,64 +45,64 @@ def square(s):
 
 # END FUNCTIONS----------------------------
 
-
-# FUNCTION CALLS COMBINED WITH VARIABLE ASSIGNMENTS IN A DEF:
-ax = 1
-ay = 1
-az = 1
-
-vert_1 = vertical(ax) # Columns 11-20, 21-30 and so on.
-horiz_1 = horizontal(ay) # N - n divisible by 10
-square_x = square(az) # No math options, brought in a cheat sheet.
+# VARIABLES
 
 
-# print(f'Vertical: {vert_1},\nHorizontal: {horiz_1},\nSquare: {square_x}')
-
-# print_grid()
 
 all_num = [1,2,3,4,5,6,7,8,9]
 tiles = []
 tile_list = []
 
-# PSEUDO:
-
-# for k,v in grid.items():
-#     if v == 0:
-#         # print(k)
-#         for item in vertical(ax), horizontal(ay), square(az):
-#             for i in item:
-#                 tiles.append(item)
-#         # tiles.append(horizontal(ay))
-#         # tiles.append(square(az))
-#         print(tiles)
-#         break
-
-
+# REFERENCE LIST
+# ITERATE ALL TILES AND ATTEMPT NUMBERS
 for k,v in grid.items():
     if v == 0:
-        # for x in range(9):
-        #     print(*vertical(ax))
-        for item in vertical(ax):
-            tiles.append(item)
-            for tile in tiles:
-                if tile not in tile_list:
-                    tile_list.append(tile)
+        print('k: ', k)
+        row_num = k % 10    
+        col_num = (k - row_num) / 10
+        for key, val in sector.items():
+            if k == key:
+                sqa_num =(val)
+        
+        # CODE: all_num - tile list = numbers to attempt
+        #  EX: 3 or 5, pick one and continue
+        # If next round fails go back to previous round and place new next valid number
+        # Keep track of failed numbers by adding them to the column or row they belong in GRID
 
-        for item in horizontal(ay):
-            tiles.append(item)
-            for tile in tiles:
-                if tile not in tile_list:
-                    tile_list.append(tile)
-
-        for item in square(az):
-            tiles.append(item)
-            for tile in tiles:
-                if tile not in tile_list:
-                    tile_list.append(tile)
-
-            # tiles.append(horizontal(ay))
-            # tiles.append(square(az))
-        print(tile_list)
         break
 
-print('All done')
+
+
+ax = row_num
+ay = int(col_num)
+az = sqa_num
+
+
+
+# NUMBER COMPILER CHECKLIST -----------------------------------------
+for item in vertical(ax):
+    tiles.append(item)
+    for tile in tiles:
+        if tile not in tile_list:
+            tile_list.append(tile)
+
+for item in horizontal(ay):
+    tiles.append(item)
+    for tile in tiles:
+        if tile not in tile_list:
+            tile_list.append(tile)
+
+for item in square(az):
+    tiles.append(item)
+    for tile in tiles:
+        if tile not in tile_list:
+            tile_list.append(tile)
+
+
+# END NUMBER COMPILER CHECKLIST -----------------------------------------
+
+print('row: ', row_num)
+print('col: ', int(col_num))
+print('sqa: ', sqa_num)
+
+print('Tile list: ', tile_list)
