@@ -4,22 +4,9 @@
 from raw_data import grid, sector, print_grid
 
 # FUNCTIONS----------------------------
+# Returns list of non zero numbers existing in the row/col/square to run against test numbers
 
-#VERTICAL
-def vertical(x):
-    t = 0
-    temp = []
-    x = (x * 10) + x
-    for k,v in grid.items():
-        y = x + 9
-        if k in range(x,y) and v > 0:
-            t = t + v
-            # print('Vertical: ', k, v)
-            temp.append(v)
-    # print('Vertical: ', temp)
-    return temp
-
-def horizontal(y):
+def horizontal(y): # ROWS
     t = 0
     temp = []
     for k,v in grid.items():
@@ -29,6 +16,19 @@ def horizontal(y):
             temp.append(v)
     # print('Horizontal: ', temp)
     return temp
+
+def vertical(x): #COLUMNS!! # k:97 =
+    t = 0
+    temp = []
+    x = (x * 10) + 1 
+    for k,v in grid.items():
+        y = x + 9
+        if k in range(x,y) and v > 0:
+            t = t + v
+            # print('Vertical: ', k, v)
+            temp.append(v)
+    # print('Vertical: ', temp)
+    return temp 
 
 def square(s):
     t = 0
@@ -47,62 +47,74 @@ def square(s):
 
 # VARIABLES
 
-
-
-all_num = [1,2,3,4,5,6,7,8,9]
-tiles = []
-tile_list = []
+test_num = [1,2,3,4,5,6,7,8,9]
 
 # REFERENCE LIST
-# ITERATE ALL TILES AND ATTEMPT NUMBERS
-for k,v in grid.items():
-    if v == 0:
-        print('k: ', k)
-        row_num = k % 10    
-        col_num = (k - row_num) / 10
-        for key, val in sector.items():
-            if k == key:
-                sqa_num =(val)
-        
-        # CODE: all_num - tile list = numbers to attempt
-        #  EX: 3 or 5, pick one and continue
-        # If next round fails go back to previous round and place new next valid number
-        # Keep track of failed numbers by adding them to the column or row they belong in GRID
+# ITERATE ALL TILES AND TEST NUMBERS IN TILES THAT EQUAL ZERO
 
-        break
+def round_1():
+    i = 0
+    for k,v in grid.items():
+        if v == 0:
+            missing_tiles = []
+            tile_list = []
+            tiles = []         # if k == 44:
+            row_num = k % 10    
+            col_num = (k - row_num) / 10
+            for key, val in sector.items():
+                if k == key:
+                    sqa_num =(val)
 
+            ax = row_num
+            ay = int(col_num)
+            az = sqa_num
 
+            for item in horizontal(ax):
+                tiles.append(item)
+                for tile in tiles:
+                    if tile not in tile_list:
+                        # print('HORI: ', tile)
+                        tile_list.append(tile)
 
-ax = row_num
-ay = int(col_num)
-az = sqa_num
+            for item in vertical(ay):
+                tiles.append(item)
+                for tile in tiles:
+                    if tile not in tile_list:
+                        # print('VERT: ', tile)
+                        tile_list.append(tile)
 
+            for item in square(az):
+                tiles.append(item)
+                for tile in tiles:
+                    if tile not in tile_list:
+                        # print('SQUA: ', tile)
+                        tile_list.append(tile)
+            
+            num = 1 
+            for num in test_num:     # TESTING NUMBERS
+                if num not in tile_list:
+                    missing_tiles.append(num)
+            if len(missing_tiles) == 1:
+                grid[k] = missing_tiles[0]
+                # print('print: ', k,v) # TESTING
+                i += 1
 
+            # print('k: ', k)
+            # print('tile_list: ', tile_list)
+            # print('missing_tiles: ', missing_tiles)
+            # print('i: ', i)
+    
+    print('\n')
 
-# NUMBER COMPILER CHECKLIST -----------------------------------------
-for item in vertical(ax):
-    tiles.append(item)
-    for tile in tiles:
-        if tile not in tile_list:
-            tile_list.append(tile)
+    print_grid()
 
-for item in horizontal(ay):
-    tiles.append(item)
-    for tile in tiles:
-        if tile not in tile_list:
-            tile_list.append(tile)
+round_1()
+round_1()
+round_1()
+round_1()
 
-for item in square(az):
-    tiles.append(item)
-    for tile in tiles:
-        if tile not in tile_list:
-            tile_list.append(tile)
+# potentially look at different method altogether.
+# everything has to add to 45 and everything has to include a exclusive single digit (not including 0)
 
+# EXPERIMENTAL FIND AND PICK FROM 2 OPTIONS
 
-# END NUMBER COMPILER CHECKLIST -----------------------------------------
-
-print('row: ', row_num)
-print('col: ', int(col_num))
-print('sqa: ', sqa_num)
-
-print('Tile list: ', tile_list)
