@@ -41,14 +41,18 @@ def square(x):
     # print('Square: ', temp)
     return temp
 
-def round_1(): # ITERATES OVER TILES AND RETURNS NON ZERO TILES
 
+used_k_list = []
+
+def rounds(n): # ITERATES OVER TILES AND RETURNS NON ZERO TILES
+    # used_k_list = [] # WE MOVED THIS BACK SO WE HAD AN EXHAUSTIVE LIST OF ALL K CHANGED
     i = 0
     for k,v in grid.items():
         if v == 0: # IF VALUE IS 0
             missing_tiles = []
             tile_list = []
-            tiles = []   
+            tiles = []
+            # used_k_list = []   
             ax = k % 10    
             ay_temp = (k - ax) / 10 
             ay = int(ay_temp)
@@ -79,22 +83,45 @@ def round_1(): # ITERATES OVER TILES AND RETURNS NON ZERO TILES
                 if num not in tile_list:
                     missing_tiles.append(num)
             # if len(missing_tiles) == 1:
-            if len(missing_tiles) >= 1:
+            
+            if len(missing_tiles) == n: # THIS NEEDS TO BE SWITCHED TO PRIORITIZE FROM SMALLEST TO LARGEST.
                 grid[k] = missing_tiles[0] # REPLACES ZERO TILES WITH FIRST ITEM ON MISSING TILES LIST. (ITERATE THROUGH LIST FOR MORE OPTIONS)
-                print('grid[k]: ', grid[k])
-                i += 1
+                print('TRUE grid[k]: ', grid[k])
+                print('k: ', k)
+                print('missing_tiles: ', missing_tiles)
+                if k not in used_k_list:
+                    used_k_list.append(k)
+                    print_grid()
+                    print('\n')
+                    rounds(n)
 
-            print('k: ', k)
-            print('tile_list: ', tile_list)
-            print('missing_tiles: ', missing_tiles)
-            print('i: ', i)
-            print('\n')
-
-    print_grid()
+            elif len(missing_tiles) == 0 and grid[k] == 0:
+                if k not in used_k_list:
+                    used_k_list.append(k) # APPENDING BROKEN K FOR MATH PURPOSES 
 
 
+                    print('missing_tiles: ', missing_tiles)
+                    print('tile_list: ', tile_list)
+                    print('BREAK grid[k]: ', grid[k])
+                    print('k: ', k)
+                    print_grid()
+                    print('\n')
+                    continue             
 
-for k,v in grid.items():
-    if v == 0: # IF VALUE IS 0
-        round_1()
+            # print('END grid[k]: ', grid[k])
 
+
+            # print('tile_list: ', tile_list)
+            # print('i: ', i)
+rounds(2)
+print('used_k_list: ', used_k_list)         
+
+
+
+
+
+
+# print_grid()
+#     print(temp_list)
+#     # print(j)
+#     print_grid()
