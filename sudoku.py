@@ -1,16 +1,15 @@
-
 # Sudoku solver built without looking at other sudoku builds.
 
 from raw_data import grid, sector, print_grid
 
-# FUNCTIONS----------------------------
-# Returns list of non zero numbers existing in the row/col/square to run against test numbers
+test_num = [1,2,3,4,5,6,7,8,9]
 
-def horizontal(y): # ROWS
+# FUNCTIONS----------------------------
+def horizontal(x): # ROWS
     t = 0
     temp = []
     for k,v in grid.items():
-        if (k - y) % 10 == 0 and v > 0:
+        if (k - x) % 10 == 0 and v > 0:
             t = t + v
             # print('Horizontal: ', k,v)
             temp.append(v)
@@ -27,94 +26,75 @@ def vertical(x): #COLUMNS!! # k:97 =
             t = t + v
             # print('Vertical: ', k, v)
             temp.append(v)
-    # print('Vertical: ', temp)
     return temp 
 
-def square(s):
+def square(x):
     t = 0
     temp = []
     for k,v in sector.items():
         # print(k,v)
         for key, value in grid.items():
-            if k == key and v == s and value > 0:
+            if k == key and v == x and value > 0:
                 t = t + value
                 # print('Square: ', value)
                 temp.append(value)
     # print('Square: ', temp)
     return temp
 
-# END FUNCTIONS----------------------------
+def round_1(): # ITERATES OVER TILES AND RETURNS NON ZERO TILES
 
-# VARIABLES
-
-test_num = [1,2,3,4,5,6,7,8,9]
-
-# REFERENCE LIST
-# ITERATE ALL TILES AND TEST NUMBERS IN TILES THAT EQUAL ZERO
-
-def round_1():
     i = 0
     for k,v in grid.items():
-        if v == 0:
+        if v == 0: # IF VALUE IS 0
             missing_tiles = []
             tile_list = []
-            tiles = []         # if k == 44:
-            row_num = k % 10    
-            col_num = (k - row_num) / 10
+            tiles = []   
+            ax = k % 10    
+            ay_temp = (k - ax) / 10 
+            ay = int(ay_temp)
             for key, val in sector.items():
                 if k == key:
-                    sqa_num =(val)
-
-            ax = row_num
-            ay = int(col_num)
-            az = sqa_num
+                    az = val
 
             for item in horizontal(ax):
                 tiles.append(item)
                 for tile in tiles:
                     if tile not in tile_list:
-                        # print('HORI: ', tile)
                         tile_list.append(tile)
 
             for item in vertical(ay):
                 tiles.append(item)
                 for tile in tiles:
                     if tile not in tile_list:
-                        # print('VERT: ', tile)
                         tile_list.append(tile)
 
             for item in square(az):
                 tiles.append(item)
                 for tile in tiles:
                     if tile not in tile_list:
-                        # print('SQUA: ', tile)
                         tile_list.append(tile)
             
             num = 1 
-            for num in test_num:     # TESTING NUMBERS
+            for num in test_num: # CREATES MISSING TILES LIST
                 if num not in tile_list:
                     missing_tiles.append(num)
-            if len(missing_tiles) == 1:
-                grid[k] = missing_tiles[0]
-                # print('print: ', k,v) # TESTING
+            # if len(missing_tiles) == 1:
+            if len(missing_tiles) >= 1:
+                grid[k] = missing_tiles[0] # REPLACES ZERO TILES WITH FIRST ITEM ON MISSING TILES LIST. (ITERATE THROUGH LIST FOR MORE OPTIONS)
+                print('grid[k]: ', grid[k])
                 i += 1
 
-            # print('k: ', k)
-            # print('tile_list: ', tile_list)
-            # print('missing_tiles: ', missing_tiles)
-            # print('i: ', i)
-    
-    print('\n')
+            print('k: ', k)
+            print('tile_list: ', tile_list)
+            print('missing_tiles: ', missing_tiles)
+            print('i: ', i)
+            print('\n')
 
     print_grid()
 
-round_1()
-round_1()
-round_1()
-round_1()
 
-# potentially look at different method altogether.
-# everything has to add to 45 and everything has to include a exclusive single digit (not including 0)
 
-# EXPERIMENTAL FIND AND PICK FROM 2 OPTIONS
+for k,v in grid.items():
+    if v == 0: # IF VALUE IS 0
+        round_1()
 
